@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 2.8.3)
 set(CATKIN_TOPLEVEL TRUE)
 
 # search for catkin within the workspace
-set(_cmd "catkin_find_pkg" "catkin" "${CMAKE_SOURCE_DIR}")
+set(_cmd "python" "catkin_find_pkg" "catkin" "${CMAKE_SOURCE_DIR}")
 execute_process(COMMAND ${_cmd}
   RESULT_VARIABLE _res
   OUTPUT_VARIABLE _out
@@ -59,5 +59,8 @@ else()
     message(FATAL_ERROR "find_package(catkin) failed. catkin was neither found in the workspace nor in the CMAKE_PREFIX_PATH. One reason may be that no ROS setup.sh was sourced before.")
   endif()
 endif()
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
 
 catkin_workspace()

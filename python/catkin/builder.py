@@ -406,7 +406,7 @@ def build_catkin_package(
         if use_ninja:
             make_check_cmake_cmd = ['ninja', 'build.ninja']
         elif use_nmake:
-            make_check_cmake_cmd = ['nmake', 'cmake_check_build_system']
+            make_check_cmake_cmd = ['msbuild', 'cmake_check_build_system']
         else:
             make_check_cmake_cmd = ['make', 'cmake_check_build_system']
 
@@ -422,7 +422,7 @@ def build_catkin_package(
     if use_ninja:
         make_executable = 'ninja'
     elif use_nmake:
-        make_executable = 'nmake'
+        make_executable = 'msbuild'
     else:
         make_executable = 'make'
 
@@ -437,7 +437,7 @@ def build_catkin_package(
     # NMake doesn't have an option to list target so try it anyway
     if install or use_nmake:
         if has_make_target(build_dir, 'install', use_ninja=use_ninja):
-            make_install_cmd = [make_executable, 'install']
+            make_install_cmd = [make_executable, 'INSTALL']
             isolation_print_command(' '.join(make_install_cmd), build_dir)
             if last_env is not None:
                 make_install_cmd = [last_env] + make_install_cmd
@@ -517,7 +517,7 @@ def build_cmake_package(
         if use_ninja:
             make_check_cmake_cmd = ['ninja', 'build.ninja']
         elif use_nmake:
-            make_check_cmake_cmd = ['nmake', 'cmake_check_build_system']
+            make_check_cmake_cmd = ['msbuild', 'cmake_check_build_system']
         else:
             make_check_cmake_cmd = ['make', 'cmake_check_build_system']
 
@@ -532,7 +532,7 @@ def build_cmake_package(
     if use_ninja:
         make_executable = 'ninja'
     elif use_nmake:
-        make_executable = 'nmake'
+        make_executable = 'msbuild'
     else:
         make_executable = 'make'
     make_cmd = [make_executable]
@@ -864,7 +864,7 @@ def build_workspace_isolated(
         if use_ninja:
             cmake_args += ['-G', 'Ninja']
         elif use_nmake:
-            cmake_args += ['-G', 'NMake Makefiles']
+            cmake_args += ['-G', 'Visual Studio 14 2015 Win64']
         else:
             cmake_args += ['-G', 'Unix Makefiles']
     elif use_ninja or use_nmake:
