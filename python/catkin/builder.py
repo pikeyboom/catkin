@@ -300,7 +300,7 @@ def get_python_install_dir():
     return python_install_dir
 
 
-def handle_make_arguments(input_make_args):
+def handle_make_arguments(input_make_args, use_visual_studio=False):
     make_args = list(input_make_args)
 
     # If no -j/--jobs/-l/--load-average flags are in make_args
@@ -317,9 +317,10 @@ def handle_make_arguments(input_make_args):
                 ros_parallel_jobs = os.environ['ROS_PARALLEL_JOBS']
                 make_args.extend(ros_parallel_jobs.split())
             else:
-                # Don't support building with multiple cores for windows
-                if not os.name == 'nt':
-                    # Else Use the number of CPU cores
+                # Else Use the number of CPU cores
+                if not os.name == 'nt' and use_visual_studio:
+                    make_args.append('/m')
+                else:
                     try:
                         jobs = multiprocessing.cpu_count()
                         make_args.append('-j{0}'.format(jobs))
