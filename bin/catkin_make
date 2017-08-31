@@ -226,7 +226,7 @@ def main():
     if args.use_ninja:
         cmd = ['ninja']
     elif args.use_nmake:
-        cmd = ['msbuild']
+        cmd = ['msbuild', 'ALL_BUILD.vcxproj']
     else:
         cmd = ['make']
     cmd.extend(handle_make_arguments(args.make_args))
