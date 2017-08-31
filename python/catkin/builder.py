@@ -317,14 +317,16 @@ def handle_make_arguments(input_make_args):
                 ros_parallel_jobs = os.environ['ROS_PARALLEL_JOBS']
                 make_args.extend(ros_parallel_jobs.split())
             else:
-                # Else Use the number of CPU cores
-                try:
-                    jobs = multiprocessing.cpu_count()
-                    make_args.append('-j{0}'.format(jobs))
-                    make_args.append('-l{0}'.format(jobs))
-                except NotImplementedError:
-                    # If the number of cores cannot be determined, do not extend args
-                    pass
+                # Don't support building with multiple cores for windows
+                if not os.name == 'nt':
+                    # Else Use the number of CPU cores
+                    try:
+                        jobs = multiprocessing.cpu_count()
+                        make_args.append('-j{0}'.format(jobs))
+                        make_args.append('-l{0}'.format(jobs))
+                    except NotImplementedError:
+                        # If the number of cores cannot be determined, do not extend args
+                        pass
     return make_args
 
 
