@@ -176,7 +176,7 @@ def main():
         if args.use_ninja:
             cmake_args += ['-G', 'Ninja']
         elif args.use_nmake:
-            cmake_args += ['-G', 'NMake Makefiles']
+            cmake_args += ['-G', 'Visual Studio 14 2015 Win64']
         else:
             cmake_args += ['-G', 'Unix Makefiles']
     elif args.use_ninja or args.use_nmake:
