@@ -303,6 +303,7 @@ def get_python_install_dir():
 def handle_make_arguments(input_make_args):
     make_args = list(input_make_args)
 
+
     # If no -j/--jobs/-l/--load-average flags are in make_args
     if not extract_jobs_flags(' '.join(make_args)):
         # If -j/--jobs/-l/--load-average are in MAKEFLAGS
@@ -317,7 +318,9 @@ def handle_make_arguments(input_make_args):
                 ros_parallel_jobs = os.environ['ROS_PARALLEL_JOBS']
                 make_args.extend(ros_parallel_jobs.split())
             else:
-                # Don't support building with multiple cores for windows
+                # Don't support building with multiple cores by default on windows
+                # This is because we might be using either nmake or visual studio
+                # which have different flags
                 if not os.name == 'nt':
                     # Else Use the number of CPU cores
                     try:
@@ -327,6 +330,10 @@ def handle_make_arguments(input_make_args):
                     except NotImplementedError:
                         # If the number of cores cannot be determined, do not extend args
                         pass
+
+    if len(make_args):
+        make_args.insert(0, "--")
+
     return make_args
 
 

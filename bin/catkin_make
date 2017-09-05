@@ -176,7 +176,7 @@ def main():
         if args.use_ninja:
             cmake_args += ['-G', 'Ninja']
         elif args.use_nmake:
-            cmake_args += ['-G', 'Visual Studio 14 2015 Win64']
+            cmake_args += ['-G', 'NMake Makefiles']
         else:
             cmake_args += ['-G', 'Unix Makefiles']
     elif args.use_ninja or args.use_nmake:
@@ -208,7 +208,7 @@ def main():
         if args.use_ninja:
             cmd = ['ninja', 'build.ninja']
         elif args.use_nmake:
-            cmd = ['msbuild', 'cmake_check_build_system']
+            cmd = ['nmake', 'cmake_check_build_system']
         else:
             cmd = ['make', 'cmake_check_build_system']
         try:
@@ -223,13 +223,10 @@ def main():
     ensure_workspace_marker(base_path)
 
     # invoke make
-    if args.use_ninja:
-        cmd = ['ninja']
-    elif args.use_nmake:
-        cmd = ['msbuild', 'ALL_BUILD.vcxproj']
-    else:
-        cmd = ['make']
+
+    cmd = ['cmake', '--build', '.']
     cmd.extend(handle_make_arguments(args.make_args))
+
     try:
         if not args.pkg:
             make_paths = [build_path]
