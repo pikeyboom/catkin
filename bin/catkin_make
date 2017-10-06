@@ -15,7 +15,7 @@ from catkin.builder import cmake_input_changed
 from catkin.builder import determine_path_argument
 from catkin.builder import extract_cmake_and_make_arguments
 from catkin.builder import get_package_names_with_recursive_dependencies
-from catkin.builder import handle_make_arguments
+from catkin.builder import handle_make_arguments, get_cmake_variable
 from catkin.builder import print_command_banner
 from catkin.builder import run_command
 from catkin.builder import run_command_colorized
@@ -225,6 +225,12 @@ def main():
     # invoke make
 
     cmd = ['cmake', '--build', '.']
+    
+    # some generators (Visual Studio) require the build type to be specified
+    build_type = get_cmake_variable(build_path, 'CMAKE_BUILD_TYPE')
+    if build_type != None:
+        cmd.extend(['--config', build_type])
+
     cmd.extend(handle_make_arguments(args.make_args))
 
     try:
