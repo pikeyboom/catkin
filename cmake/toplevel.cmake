@@ -60,7 +60,4 @@ else()
   endif()
 endif()
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
 catkin_workspace()
